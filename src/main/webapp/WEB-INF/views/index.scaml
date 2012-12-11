@@ -8,3 +8,6 @@
     %h2
       %a{:href => {post.url}} = post.title
     %div = post.body
+    %div.created Created #{post.created}
+    - if(post.modified.isDefined)
+      %div.modified Last modified #{post.modified.get}

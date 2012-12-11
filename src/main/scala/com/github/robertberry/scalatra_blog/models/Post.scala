@@ -1,11 +1,15 @@
 package com.github.robertberry.scalatra_blog.models
 
 import org.squeryl.PrimitiveTypeMode._
+import java.sql.Timestamp
+import java.util.Date
 
 /**
  * Blog post
  */
-class Post(val id: Long, val title: String, val body: String) extends ScalatraRecord {
+class Post(val id: Long, val title: String, val body: String,
+           val created: Timestamp = new Timestamp(new Date().getTime),
+           val modified: Option[Timestamp] = None) extends ScalatraRecord {
 
   /**
    * URL for the post

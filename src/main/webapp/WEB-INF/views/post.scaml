@@ -2,4 +2,9 @@
 -@ val post: Post
 - attributes("title") = post.title
 
+%div = post.created
+
 %div = post.body
+
+- if (post.modified.isDefined)
+  %div.modified Modified #{post.modified.get}
