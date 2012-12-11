@@ -1,0 +1,10 @@
+- import org.squeryl.Query
+- import com.github.robertberry.scalatra_blog.models.Post
+-@ val posts: Query[Post]
+- attributes("title") = "My blog"
+
+- for(post <- posts.toList)
+  %div
+    %h2
+      %a{:href => {post.url}} = post.title
+    %div = post.body

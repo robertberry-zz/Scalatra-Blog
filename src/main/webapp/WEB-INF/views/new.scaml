@@ -1,0 +1,14 @@
+- attributes("title") = "My blog - new post"
+
+%form{:action => "/posts", :method => "post"}
+  %dl
+    %dt
+      %label{:for => "title"} Title
+    %dd
+      %input{:name => "title", :type => "text"}
+    %dt
+      %label{:for => "body"} Body
+    %dd
+      %textarea{:name => "body"}
+
+  %input{:type => "submit", :value => "Publish"}
