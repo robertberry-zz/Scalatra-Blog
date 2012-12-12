@@ -9,6 +9,7 @@
   - for(post <- posts)
     %div
       %h3
+        %span.time = post.timeCreated
         %a{:href => {post.url}} = post.title
       %div = post.body
       - if(post.modified.isDefined)

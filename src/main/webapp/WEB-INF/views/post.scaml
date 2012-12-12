@@ -1,8 +1,8 @@
 - import com.github.robertberry.scalatra_blog.models.Post
 -@ val post: Post
-- attributes("title") = post.title
+- attributes("title") = post.created.toString
 
-%div = post.created
+%h2 = post.title
 
 %div = post.body
 

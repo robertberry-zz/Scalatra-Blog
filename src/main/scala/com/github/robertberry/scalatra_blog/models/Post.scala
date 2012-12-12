@@ -8,6 +8,7 @@ import com.github.robertberry.utils.{SquerylUtilities, DateUtilities}
 import com.github.robertberry.utils.DateUtilities.createTimestamp
 import org.squeryl.dsl.{Measures, DateExpression, GroupWithMeasures}
 import org.squeryl.dsl.ast.FunctionNode
+import org.joda.time.DateTime
 
 /**
  * Blog post
@@ -15,6 +16,10 @@ import org.squeryl.dsl.ast.FunctionNode
 class Post(val id: Long, val title: String, val body: String,
            val created: Timestamp = new Timestamp(new Date().getTime),
            val modified: Option[Timestamp] = None) extends ScalatraRecord {
+
+  def timeCreated: String = {
+    new DateTime(created).toString("hh:mma")
+  }
 
   /**
    * URL for the post
@@ -87,12 +92,25 @@ object Post {
    * @return Query returning tuples of the index of the month and the number
    *         of posts
    */
-  def countPerMonth(year: Int): Query[GroupWithMeasures[(Long), (Long)]] = {
+  def countPerMonth(year: Int): Query[GroupWithMeasures[(Int), (Long)]] = {
     val (start, end) = DateUtilities.yearTimestampRange(year)
 
     from(BlogDatabase.posts)((post) =>
       where(post.created >= start and post.created <= end)
       groupBy(SquerylUtilities.month(post.created))
+      compute(count())
+    )
+  }
+
+  /**
+   * Number of posts per year in the blog
+   *
+   * @return Query returning tuples of the year and the number of posts made
+   *         in that year
+   */
+  def countPerYear: Query[GroupWithMeasures[(Int), (Long)]] = {
+    from(BlogDatabase.posts)((post) =>
+      groupBy(SquerylUtilities.year(post.created))
       compute(count())
     )
   }

@@ -1,0 +1,8 @@
+- import com.github.robertberry.scalatra_blog.models.Post
+-@ val counts: List[(Int, String, Long)]
+- attributes("title") = "Blog Archive"
+
+- for((year, url, count) <- counts)
+  %p
+    %a{:href => {url}} #{year.toString}
+    (#{count})

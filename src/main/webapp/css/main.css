@@ -1,0 +1,19 @@
+
+div.menu {
+  height: 1.5em;
+}
+
+div.menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+div.menu ul li {
+  padding: 0 10px;
+  float: left;
+}
+
+h3 span.time {
+  font: normal 14px Arial, Verdana, sans-serif;
+  color: #666;
+}
