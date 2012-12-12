@@ -41,6 +41,18 @@ object DateUtilities {
   }
 
   /**
+   * A tuple containing the earliest and latest timestamp belonging to the
+   * given year
+   *
+   * @param year The year
+   * @return The tuple
+   */
+  def yearTimestampRange(year: Int): Tuple2[Timestamp, Timestamp] = {
+    new Tuple2(createTimestamp(year, 0, 1, 0, 0, 0),
+      createTimestamp(year, 11, 31, 23, 59, 59))
+  }
+
+  /**
    * Given the number of a month, returns its name
    *
    * @param month Number of month (zero-indexed)

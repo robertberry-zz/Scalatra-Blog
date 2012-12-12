@@ -4,8 +4,10 @@ import org.squeryl.PrimitiveTypeMode._
 import java.sql.Timestamp
 import java.util.{Calendar, GregorianCalendar, Date}
 import org.squeryl.Query
-import com.github.robertberry.utils.DateUtilities
+import com.github.robertberry.utils.{SquerylUtilities, DateUtilities}
 import com.github.robertberry.utils.DateUtilities.createTimestamp
+import org.squeryl.dsl.{Measures, DateExpression, GroupWithMeasures}
+import org.squeryl.dsl.ast.FunctionNode
 
 /**
  * Blog post
@@ -45,8 +47,7 @@ object Post {
    */
   def createdBetween(start: Timestamp, end: Timestamp): Query[Post] = {
     from(BlogDatabase.posts)((post) =>
-      where(post.created >= start
-        and post.created <= end)
+      where(post.created >= start and post.created <= end)
         select(post)
         orderBy(post.created asc)
     )
@@ -59,8 +60,41 @@ object Post {
    * @return The posts
    */
   def forYear(year: Int): Query[Post] = {
-    createdBetween(createTimestamp(year, 0, 1, 0, 0, 0),
-      createTimestamp(year, 11, 31, 23, 59, 59))
+    val (start, end) = DateUtilities.yearTimestampRange(year)
+
+    createdBetween(start, end)
+  }
+
+  /**
+   * Number of posts in the given year
+   *
+   * @param year The year
+   * @return Query returning number of posts
+   */
+  def countForYear(year: Int): Query[Measures[Long]] = {
+    val (start, end) = DateUtilities.yearTimestampRange(year)
+
+    from(BlogDatabase.posts)((post) =>
+      where(post.created >= start and post.created <= end)
+      compute(count())
+    )
+  }
+
+  /**
+   * Number of posts per month in the given year
+   *
+   * @param year The year
+   * @return Query returning tuples of the index of the month and the number
+   *         of posts
+   */
+  def countPerMonth(year: Int): Query[GroupWithMeasures[(Long), (Long)]] = {
+    val (start, end) = DateUtilities.yearTimestampRange(year)
+
+    from(BlogDatabase.posts)((post) =>
+      where(post.created >= start and post.created <= end)
+      groupBy(SquerylUtilities.month(post.created))
+      compute(count())
+    )
   }
 
   /**

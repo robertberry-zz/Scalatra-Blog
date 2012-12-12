@@ -1,13 +1,12 @@
 - import com.github.robertberry.scalatra_blog.models.Post
--@ val posts: List[Post]
+-@ val counts: List[(String, String, Long)]
 -@ val year: Int
+-@ val total: Long
 - attributes("title") = "Posts for %d".format(year)
 
-- for(post <- posts)
-  %div
-    %h2
-      %a{:href => {post.url}} = post.title
-    %div = post.body
-    %div.created Created #{post.created}
-    - if(post.modified.isDefined)
-      %div.modified Last modified #{post.modified.get}
+%p #{total} posts this year
+
+- for((month, url, count) <- counts)
+  %p
+    %a{:href => {url}} #{month}
+    (#{count})
