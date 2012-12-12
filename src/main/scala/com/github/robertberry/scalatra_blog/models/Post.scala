@@ -4,6 +4,8 @@ import org.squeryl.PrimitiveTypeMode._
 import java.sql.Timestamp
 import java.util.{Calendar, GregorianCalendar, Date}
 import org.squeryl.Query
+import com.github.robertberry.utils.DateUtilities
+import com.github.robertberry.utils.DateUtilities.createTimestamp
 
 /**
  * Blog post
@@ -51,37 +53,6 @@ object Post {
   }
 
   /**
-   * Helper method for creating timestamps (which is a bizarrely laborious process).
-   *
-   * @param year Year
-   * @param month Month (zero-indexed)
-   * @param day Day
-   * @param hour Hour
-   * @param minute Minute
-   * @param second Second
-   * @return The timestamp
-   */
-  private def createTimestamp(year: Int, month: Int, day: Int,
-                              hour: Int, minute: Int, second: Int): Timestamp = {
-    new Timestamp(new GregorianCalendar(year, month, day, hour, minute, second)
-      .getTime.getTime)
-  }
-
-  /**
-   * Number of days in the given month in the given year
-   *
-   * @param year The year
-   * @param month The month (zero-indexed)
-   * @return The number of days
-   */
-  private def daysInMonth(year: Int, month: Int): Int = {
-    val cal = Calendar.getInstance()
-    cal.set(Calendar.YEAR, year)
-    cal.set(Calendar.MONTH, month)
-    cal.getActualMaximum(Calendar.DATE)
-  }
-
-  /**
    * Posts for the given year, ordered by creation date
    *
    * @param year The year
@@ -103,7 +74,7 @@ object Post {
     val zeroIndexedMonth = month - 1
 
     createdBetween(createTimestamp(year, zeroIndexedMonth, 1, 0, 0, 0),
-      createTimestamp(year, month, daysInMonth(year, zeroIndexedMonth), 0, 0,
-        0))
+      createTimestamp(year, month, DateUtilities.daysInMonth(year,
+        zeroIndexedMonth), 0, 0, 0))
   }
 }

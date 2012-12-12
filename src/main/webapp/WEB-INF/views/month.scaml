@@ -1,8 +1,8 @@
 - import com.github.robertberry.scalatra_blog.models.Post
 -@ val posts: List[Post]
 -@ val year: Int
--@ val month: Int
-- attributes("title") = "Posts for %d, %d".format(year, month)
+-@ val month: String
+- attributes("title") = "Posts for %s, %d".format(month, year)
 
 - for(post <- posts)
   %div
