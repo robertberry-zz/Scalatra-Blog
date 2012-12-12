@@ -1,0 +1,19 @@
+-@ val title: String
+-@ val headline: String = title
+-@ val body: String
+
+!!!
+%html
+  %head
+    %title= title
+    %link{:rel => "stylesheet", :type => "text/css", :href => "/css/main.css"}
+  %body
+    #content
+      %h1= headline
+      %div.menu
+        %ul
+          %li
+            %a{:href => "/"} Front page
+          %li
+            %a{:href => "/archive"} Archive
+      != body
