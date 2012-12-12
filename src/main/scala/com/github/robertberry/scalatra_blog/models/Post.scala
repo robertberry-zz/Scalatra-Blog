@@ -74,7 +74,7 @@ object Post {
    * @param month The month (zero-indexed)
    * @return The number of days
    */
-  private def daysInMonth(year: Int, month: Int) = {
+  private def daysInMonth(year: Int, month: Int): Int = {
     val cal = Calendar.getInstance()
     cal.set(Calendar.YEAR, year)
     cal.set(Calendar.MONTH, month)
@@ -100,7 +100,10 @@ object Post {
    * @return The posts
    */
   def forMonth(year: Int, month: Int): Query[Post] = {
-    createdBetween(createTimestamp(year, month, 1, 0, 0, 0),
-      createTimestamp(year, month, daysInMonth(year, month), 0, 0, 0))
+    val zeroIndexedMonth = month - 1
+
+    createdBetween(createTimestamp(year, zeroIndexedMonth, 1, 0, 0, 0),
+      createTimestamp(year, month, daysInMonth(year, zeroIndexedMonth), 0, 0,
+        0))
   }
 }
