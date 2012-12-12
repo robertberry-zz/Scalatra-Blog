@@ -49,7 +49,7 @@ object Post {
     from(BlogDatabase.posts)((post) =>
       where(post.created >= start and post.created <= end)
         select(post)
-        orderBy(post.created asc)
+        orderBy(post.created desc)
     )
   }
 

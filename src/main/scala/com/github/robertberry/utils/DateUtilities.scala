@@ -62,4 +62,16 @@ object DateUtilities {
     val months = new java.text.DateFormatSymbols().getMonths
     months(month)
   }
+
+  /**
+   * Zero-indexed month of the timestamp
+   *
+   * @param time The timestamp
+   * @return The month
+   */
+  def timestampMonth(time: Timestamp): Int = {
+    val cal = Calendar.getInstance()
+    cal.setTimeInMillis(time.getTime)
+    cal.get(Calendar.MONTH)
+  }
 }

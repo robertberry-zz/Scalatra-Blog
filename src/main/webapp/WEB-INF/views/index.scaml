@@ -1,13 +1,15 @@
-- import org.squeryl.Query
+- import java.sql.Timestamp
 - import com.github.robertberry.scalatra_blog.models.Post
--@ val posts: Query[Post]
+-@ val posts: Iterable[(Timestamp, Iterable[Post])]
 - attributes("title") = "My blog"
 
-- for(post <- posts.toList)
-  %div
-    %h2
-      %a{:href => {post.url}} = post.title
-    %div = post.body
-    %div.created Created #{post.created}
-    - if(post.modified.isDefined)
-      %div.modified Last modified #{post.modified.get}
+- for((date, posts) <- posts.toList)
+  %h2 = date
+
+  - for(post <- posts)
+    %div
+      %h3
+        %a{:href => {post.url}} = post.title
+      %div = post.body
+      - if(post.modified.isDefined)
+        %div.modified Last modified #{post.modified.get}
